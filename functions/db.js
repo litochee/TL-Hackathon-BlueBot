@@ -115,9 +115,10 @@ module.exports.drainAffection = async function(pool, client){
             }else if(a === 30){
                 let channel = await client.guilds.cache.get(getAllStats.rows[i].guildID).channels.cache.get(getAllStats.rows[i].channel);
                 channel.send({embed: em.genEmbed("Blue is feeling really lonely. Give him some pets to make him feel better", "https://cdn.discordapp.com/attachments/773932421996740648/774740798159061072/771556839976468480.png")})//affection
+            }else{
+                let updateAffection = [a, getAllStats.rows[i].guildID];
+                await c.query('UPDATE "blueStats" SET "affection" = $1 WHERE "guildID" = $2', updateAffection);
             }
-            let updateAffection = [a, getAllStats.rows[i].guildID];
-            await c.query('UPDATE "blueStats" SET "affection" = $1 WHERE "guildID" = $2', updateAffection);
         }
         await c.query('COMMIT')
     } catch (e) {
@@ -143,6 +144,8 @@ module.exports.drainHype = async function(pool, client){
                 channel.send({embed: em.genEmbed("Blue is feeling down, hunger and affection will now drain twice as fast", "https://media.discordapp.net/attachments/773932421996740648/774740798159061072/771556839976468480.png")})
             }if(a < 35){
                 await c.query('UPDATE "blueStats" SET "hype" = $1, "doubleDrain" = $2 WHERE "guildID" = $3', [a, true, getAllStats.rows[i].guildID])
+            }else if(a <= 0){
+                await c.query('UPDATE "blueStats" SET "hype" = $1, "doubleDrain" = $2 WHERE "guildID" = $3', [0, true, getAllStats.rows[i].guildID])
             }else{
                 await c.query('UPDATE "blueStats" SET "hype" = $1, "doubleDrain" = $2 WHERE "guildID" = $3', [a, false, getAllStats.rows[i].guildID])
             }
