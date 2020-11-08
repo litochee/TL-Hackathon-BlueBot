@@ -1,0 +1,9 @@
+{
+    "prefix" : "!b",
+    "dbUser" : "",
+	"dbPass" : "",
+	"db" : "tl",
+	"dbPort" : "5432",
+    "dbHost" : "192.168.1.103",
+    "token" : ""
+}
